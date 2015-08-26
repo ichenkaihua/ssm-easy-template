@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Gradle : com.github.ichenkaihua:ssm-easy-template : ssm-easy-template-1.0-SNAPSHOT.war">
+    <output-path>$PROJECT_DIR$/out/artifacts/ssm-easy-template</output-path>
+    <properties id="gradle-properties">
+      <options external-project-path="$PROJECT_DIR$" />
+    </properties>
+    <root id="archive" name="ssm-easy-template-1.0-SNAPSHOT.war">
+      <element id="javaee-facet-resources" facet="ssm-easy-template/web/Web Gradle : ssm-easy-template-1.0-SNAPSHOT.war" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="ssm-easy-template" />
+          <element id="dir-copy" path="$PROJECT_DIR$/build/resources/main" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/ssm-easy-template/exploded/ssm-easy-template-1.0-SNAPSHOT.war/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>
