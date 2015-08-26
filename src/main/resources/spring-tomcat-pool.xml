@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        ">
+
+
+    <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource"
+          destroy-method="close">
+        <property name="poolProperties">
+            <bean class="org.apache.tomcat.jdbc.pool.PoolProperties">
+                <property name="url" value="${jdbc.url}"/>
+                <property name="driverClassName" value="${jdbc.driverClassName}"/>
+                <property name="username" value="${jdbc.user}"/>
+                <property name="password" value="${jdbc.pass}"/>
+                <property name="jmxEnabled" value="${jmxEnabled}"/>
+                <property name="validationInterval" value="${validationInterval}"/>
+                <property name="timeBetweenEvictionRunsMillis" value="${timeBetweenEvictionRunsMillis}"/>
+                <property name="maxActive" value="${maxActive}"/>
+                <property name="initialSize" value="${initialSize}"/>
+                <property name="maxWait" value="${maxWait}"/>
+                <property name="maxIdle" value="${maxIdle}"/>
+                <property name="removeAbandonedTimeout" value="${removeAbandonedTimeout}"/>
+                <property name="minEvictableIdleTimeMillis" value="${minEvictableIdleTimeMillis}"/>
+                <property name="minIdle" value="${minIdle}"/>
+                <property name="logAbandoned" value="${logAbandoned}"/>
+                <property name="removeAbandoned" value="${removeAbandoned}"/>
+                <property name="jdbcInterceptors" value="${jdbcInterceptors}"/>
+                <property name="validationQuery" value="${validationQuery}"/>
+                <property name="testOnBorrow" value="${testOnBorrow}"/>
+                <property name="testOnReturn" value="${testOnReturn}"/>
+                <property name="testWhileIdle" value="${testWhileIdle}"/>
+
+
+            </bean>
+        </property>
+    </bean>
+
+
+    <!-- <property name="validationQuery"><value>SELECT 1</value></property>
+        <property name="testOnBorrow"><value>true</value></property> <property name="testOnReturn"><value>true</value></property>
+        <property name="testWhileIdle"><value>true</value></property> -->
+
+
+</beans>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.1.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+        ">
+
+
+	<!-- 读取配置文件 -->
+	<context:property-placeholder
+			location="classpath:jdbc-mysql.properties,classpath:tomcat-pool-config.properties,classpath:mail-config.properties" />
+
+
+
+	<!-- 扫描注解，除去web层注解，web层注解在mvc配置中扫描 -->
+	<context:component-scan
+		base-package="com.github.ichenkaihua.compoment,com.github.ichenkaihua.service">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.RestController" />
+	</context:component-scan>
+
+	<!--测试环境用spring的datasource-->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"><value>${jdbc.driverClassName}</value></property>
+		<property name="url"><value>${jdbc.url}</value></property>
+		<property name="username"><value>${jdbc.user}</value></property>
+		<property name="password"><value>${jdbc.pass}</value></property>
+
+	</bean>
+
+
+
+	<!-- 开启AOP监听 只对当前配置文件有效 -->
+	<aop:aspectj-autoproxy expose-proxy="true" />
+
+	<!-- c3p0连接池 -->
+	<!-- <import resource="spring-c3p0.xml" /> -->
+
+	<!-- tomcat连接池 -->
+	<import resource="spring-tomcat-pool.xml" />
+	<!-- hibernate及事物配置 -->
+	<!-- <import resource="spring-hibernate.xml" /> -->
+	
+	<import resource="spring-mybatis.xml" />
+
+
+	<!-- 配置邮箱服务器 -->
+	<!--<import resource="spring-mail.xml" />-->
+	
+
+	<!-- shiro安全模块定义 -->
+	<!-- <import resource="spring-shiro.xml" /> -->
+
+
+
+	<!-- 基于注释的事务，当注释中发现@Transactional时，使用id为“transactionManager”的事务管理器 -->
+	<!-- 如果没有设置transaction-manager的值，则spring以缺省默认的事务管理器来处理事务，默认事务管理器为第一个加载的事务管理器 -->
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+<!--	<bean id="taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="10" />
+		<property name="maxPoolSize" value="30" />
+	</bean>-->
+
+
+	<!-- 上传解析 -->
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="3000000" />
+	</bean>
+
+
+
+	<!-- 配置事务异常封装 -->
+	<bean id="persistenceExceptionTranslationPostProcessor"
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+
+</beans>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.1.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+        ">
+
+
+	<!-- 对mvc注解支持 -->
+	<mvc:annotation-driven  >
+	
+	  <mvc:argument-resolvers>
+            <bean class="com.github.ichenkaihua.bind.CurrentUserMethodArgumentResolver"/>
+		  <bean class="com.github.ichenkaihua.bind.RequestPageInfoMethodArgumentResolver" />
+        </mvc:argument-resolvers>
+	</mvc:annotation-driven>
+	<mvc:annotation-driven  />
+	
+	
+
+
+	<!-- 只扫描@controller注解 -->
+	<context:component-scan base-package="com.github.ichenkaihua.controller">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.RestController" />
+			<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+	</context:component-scan>
+
+
+	<mvc:view-controller path="/" view-name="forward:/index" />
+
+	<mvc:default-servlet-handler />
+	<!-- 静态资源映射 -->
+	<mvc:resources mapping="/images/**" location="/WEB-INF/images/" />
+	<mvc:resources mapping="/css/**" location="/WEB-INF/css/" />
+	<mvc:resources mapping="/js/**" location="/WEB-INF/js/" />
+	<mvc:resources mapping="/fonts/**" location="/WEB-INF/fonts/" />
+
+
+
+
+
+
+	<!-- 定义视图解析器 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/jsp/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+	
+<!--	 <import resource="spring-mvc-shiro.xml"/>-->
+	
+
+	
+	
+	
+	
+
+</beans>

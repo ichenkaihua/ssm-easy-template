@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        ">
+
+
+
+	<!-- Subject工厂 -->
+	<!-- 
+	<bean id="subjectFactory"
+		class=" com.dreamliner.secretchat.secure.StatelessDefaultSubjectFactory" /> -->
+
+
+
+	<!-- Realm实现 -->
+	<bean id="statelessRealm" class="com.github.ichenkaihua.secure.realm.StatelessRealm">
+		<property name="cachingEnabled" value="false" />
+	</bean>
+
+
+
+
+	<!-- 会话管理器 -->
+	<bean id="sessionManager" class="org.apache.shiro.session.mgt.DefaultSessionManager">
+		<property name="sessionValidationSchedulerEnabled" value="false" />
+	</bean>
+
+
+
+	<!-- 安全管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="statelessRealm" />
+		<property name="subjectDAO.sessionStorageEvaluator.sessionStorageEnabled"
+			value="false" />
+		<!-- <property name="subjectFactory" ref="subjectFactory" /> -->
+		<property name="sessionManager" ref="sessionManager" />
+	</bean>
+
+	<!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
+	<!-- <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"> 
+		<property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager" 
+		/> <property name="arguments" ref="securityManager" /> </bean> -->
+
+	<!-- restNossion过滤器 -->
+	<bean id="restNosession"
+		class="com.github.ichenkaihua.secure.filter.NoSesstionHttpMethodPermissionFilter" />
+
+	<!-- Shiro的Web过滤器 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="filters">
+			<map>
+
+				<!-- 将重写的rest覆盖系统rest -->
+				<entry key="rest" value-ref="restNosession" />
+			</map>
+		</property>
+		<property name="filterChainDefinitions">
+			<value>
+				/users/**=noSessionCreation,rest
+			
+				
+			</value>
+		</property>
+	</bean>
+
+	<!-- Shiro生命周期处理器 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+
+
+
+
+
+
+
+</beans>
