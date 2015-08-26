@@ -3,6 +3,8 @@ version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'war'
+apply plugin: 'idea'
+apply plugin: 'eclipse-wtp'
 
 sourceCompatibility = 1.8
 
