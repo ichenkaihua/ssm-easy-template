@@ -29,6 +29,8 @@ public class MybatisGenerator {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (XMLParserException e) {
+			//test
+
 			e.printStackTrace();
 		}
 
