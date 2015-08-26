@@ -9,6 +9,7 @@
 * **SpringMVC**: 与spring无缝集成，简单灵活，支持restful风格。
 * **Mybatis** :个人认为比hibernate好控制，毕竟是自己写的sql语句。
 * **Shiro**: apache的权限管理框架，扩展性好，使用简单，个人认为比`Spring-Security`框架容易入手。
+
 #####工具框架
 * **Spring-Test** :包括了常用单元测试、集成测试、web测试，`src/test/java`下有几个简单的测试类。使用测试框架的好处就是节省时间，无需启动server就能测试程序。
 * **Mybatis-PageHelper** :mybatis的分页排序插件，由国人开发，用起来非常方便，[Mybatis-PageHelperp][2]项目主页。
