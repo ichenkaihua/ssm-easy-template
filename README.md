@@ -42,7 +42,7 @@ Eclipse确实强大，但 [Intellij Idea][1] 更智能，强烈推荐 **Idea**
 ####部署
 `Tomcat`或者`Jetty`都行，只需要配置 IDEA的 `run config`
 ## 关于我
-**博客链接**:[陈开华的博客][3]
+**博客链接**:[陈开华的博客][4]
 
 **Email**: admin@chenkaihua.com
 
