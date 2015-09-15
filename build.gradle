@@ -31,7 +31,6 @@ buildscript{
     dependencies{
 
         classpath 'org.akhikhl.gretty:gretty:1.2.4'
-        classpath 'org.mybatis.generator:mybatis-generator-core:1.3.2'
     }
 
 
@@ -71,7 +70,7 @@ dependencies {
     compile 'org.mybatis:mybatis:3.3.0'
     compile 'org.mybatis:mybatis-spring:1.2.3'
     compile 'com.github.pagehelper:pagehelper:4.0.0'
-    compile 'org.mybatis.generator:mybatis-generator-core:1.3.2'
+    //compile 'org.mybatis.generator:mybatis-generator-core:1.3.2'
     compile 'org.apache.shiro:shiro-spring:1.2.4'
     compile 'org.apache.tomcat:tomcat-jdbc:8.0.24'
     compile 'javax.mail:mail:1.4.7'
@@ -86,22 +85,6 @@ dependencies {
     mybatisGenerator 'mysql:mysql-connector-java:5.1.36'
 
 }
-
-
-task printTest<<{
-
-  /*  println sourceSets.main.java.srcDirs[0].path
-    println sourceSets.main.resources.srcDirs[0].path*/
-    /*println properties.each {
-        println "${it.key} ${it.value}";
-    }*/
-    println "${userId}"
-    println configurations['userId']
-
-}
-
-
-
 
 
 task mybatisGenerate << {
