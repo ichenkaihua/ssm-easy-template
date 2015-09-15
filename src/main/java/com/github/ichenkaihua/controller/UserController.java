@@ -16,7 +16,7 @@ import java.util.List;
 public class UserController {
     private Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @Autowired
+   /* @Autowired
     @Qualifier("userService")
     IUserService userService;
 
@@ -36,7 +36,7 @@ public class UserController {
         int insert = userService.insert(user);
         return user.getId();
 
-    }
+    }*/
 
 
 }
