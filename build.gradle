@@ -79,7 +79,7 @@ dependencies {
     compile 'org.aspectj:aspectjweaver:1.8.6'
     compile 'commons-fileupload:commons-fileupload:1.3.1'
     compile 'org.slf4j:slf4j-log4j12:1.7.12'
-    compile 'tk.mybatis:mapper:3.1.3'
+    //compile 'tk.mybatis:mapper:3.1.3'
     compile 'javax.servlet:javax.servlet-api:3.1.0'
 
     mybatisGenerator 'org.mybatis.generator:mybatis-generator-core:1.3.2'
@@ -90,19 +90,32 @@ dependencies {
 
 task printTest<<{
 
-    println project.projectDir
+  /*  println sourceSets.main.java.srcDirs[0].path
+    println sourceSets.main.resources.srcDirs[0].path*/
+    /*println properties.each {
+        println "${it.key} ${it.value}";
+    }*/
+    println "${userId}"
+    println configurations['userId']
 
 }
 
 
-task mybatisGenerate << {
-    println projectDir
-    println project.path
-    ext.destDir = new File(projectDir,"mybatisGenerate")
 
- //   destDir.mkdirs()
-    println destDir.path
+
+
+task mybatisGenerate << {
     ant.properties['targetProject'] = projectDir.path
+    ant.properties['driverClass']=this.driverClass
+    ant.properties['connectionURL']=this.connectionURL
+    ant.properties['userId']=this.userId
+    ant.properties['password']=this.password
+    ant.properties['src_main_java']=sourceSets.main.java.srcDirs[0].path
+    ant.properties['src_main_resources']=sourceSets.main.resources.srcDirs[0].path
+    ant.properties['modelPackage']=this.modelPackage
+    ant.properties['mapperPackage']=this.mapperPackage
+    ant.properties['sqlMapperPackage']=this.sqlMapperPackage
+
     ant.taskdef (
             name: 'mbgenerator',
             classname: 'org.mybatis.generator.ant.GeneratorAntTask',
@@ -112,6 +125,16 @@ task mybatisGenerate << {
             configfile: 'src/main/resources/generatorConfig.xml',verbose: true){
         propertyset {
             propertyref(name: 'targetProject')
+            propertyref(name: 'userId')
+            propertyref(name:'driverClass')
+            propertyref(name: 'connectionURL')
+            propertyref(name: 'password')
+            propertyref(name: 'src_main_java')
+            propertyref(name: 'src_main_resources')
+            propertyref(name:'modelPackage')
+            propertyref(name: 'mapperPackage')
+            propertyref(name: 'sqlMapperPackage')
+
         }
     }
 }

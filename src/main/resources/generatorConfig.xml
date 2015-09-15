@@ -8,25 +8,26 @@
             <property name="suppressAllComments" value="true" />
         </commentGenerator>
 
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/ssm_easy_template"
-                        userId="root"
-                        password="chenhua0204">
+        <jdbcConnection driverClass="${driverClass}"
+                        connectionURL="${connectionURL}"
+                        userId="${userId}"
+                        password="${password}">
                 </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>
-        <javaModelGenerator targetPackage="com.github.ichenkaihua.model"
-                            targetProject="${targetProject}/src/main/java">
+        <javaModelGenerator targetPackage="${modelPackage}"
+                            targetProject="${src_main_java}">
             <property name="enableSubPackages" value="false" />
-            <property name="trimStrings" value="false" />
+            <property name="trimStrings" value="true" />
         </javaModelGenerator>
-        <sqlMapGenerator targetPackage="mybatis_mapper"
-                         targetProject="${targetProject}/src/main/resources">
+        <sqlMapGenerator targetPackage="${sqlMapperPackage}"
+                         targetProject="${src_main_resources}">
             <property name="enableSubPackages" value="false" />
+
         </sqlMapGenerator>
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="com.github.ichenkaihua.mapper" targetProject="${targetProject}/src/main/java">
+                             targetPackage="${mapperPackage}" targetProject="${src_main_java}">
             <property name="enableSubPackages" value="false" />
         </javaClientGenerator>
         <table tableName="%" >

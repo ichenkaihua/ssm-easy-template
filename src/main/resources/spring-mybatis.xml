@@ -31,7 +31,7 @@
 						</value>
 					</property>
 				</bean>
-				<bean class="tk.mybatis.mapper.mapperhelper.MapperInterceptor">
+				<!--<bean class="tk.mybatis.mapper.mapperhelper.MapperInterceptor">
 					<property name="properties">
 						<value>
 							mappers=tk.mybatis.mapper.common.Mapper
@@ -39,7 +39,7 @@
 							notEmpty=true
 						</value>
 					</property>
-				</bean>
+				</bean>-->
 			</array>
 		</property>
 	</bean>
@@ -67,7 +67,8 @@
 			<tx:method name="select*" read-only="true" />
 			<tx:method name="find*" read-only="true" />
 			<tx:method name="get*" read-only="true" />
-			<tx:method name="*" />
+			<tx:method name="sava*" />
+
 		</tx:attributes>
 	</tx:advice>
 
