@@ -27,20 +27,206 @@ Eclipse确实强大，但 [Intellij Idea][1] 更智能，强烈推荐 **Idea**
 `Maven`可能更容易上手，但我更喜欢`Gradle`的简洁
 
 ## 使用
-####下载
+###下载
 `Download Zip`或者`git clone`
 ``` shell
-	git clone https://www.github.com/ichenkaihua/ssm-easy-template.git
+	git clone https://github.com/ichenkaihua/ssm-easy-template.git
 ```
-####导入
-建议使用IDEA，如果使用eclipse，请搜索gradle的eclipse插件用法
-####修改
-*  **数据库修改**，修改`src/main/resource/jdbc-mysql.properties`和`/src/main/resource/generatorConfig.xml`前者程序运行时读取，后者是为了使用mybatis Generator，将会根据数据库的表生成实体类和mappr。具体请看[Mybatis通用Mapper3][3]介绍
-*  **根据数据库表生成model和mapper**。修改好数据库后，打开 `/sr/test/java/MybatisGenerator`右键-->Run MybatisGenerotor,之后可以看到`com.github.ichenkaihua.model`包和`com.github.ichenkaihua.mapper`包下就生成了数据库表对应的实体类和mapper，`src/main/resource/mybatis_mapper`资源文件夹下生成了XxxMapper.xml映射文件。
-* **写通用逻辑** 一般一个模块都是`controller`+`service`+`mapper`，其中`service`已经有了`IService`接口和`BaseService`抽象类封装，常用单表操作只需继承`BaseService`就已经实现，具体请看`com.github.ichenkaihua.service.impl.Userservice`实现。对于`mapper`包下类，由于使用了[Mybatis通用Mapper3][3]插件，单表操作无需我们写接口，涉及多表联合时，需要在相应mapper类下写接口，然后在`/resource/mybatis_mapper/XxxMapper.xml`写映射实现。具体请查阅Mybatis官方文档
+###导入
+建议使用IDEA，eclipse也没问题
 
-####部署
+###快速开始
+导入`doc/ssm-easy-template.sql`到Mysql
+```shell
+#进入项目目录
+cd ssm-easy-template/
+# jetty启动项目
+./gradlew  jettyStart
+# 获取所有用户 
+curl http://localhost:8080/users
+
+# 其他操作...
+
+#关闭jetty
+./gradlew jettyStop
+```
+
+###详细修改
+
+####利用mybatis-generator(MBG)生成`model/mapper/mapper.xml`文件
+Mybatis考虑到手写XML文件的繁琐，因此开发了MBG工具，通用Mapper这个项目再次简化了mybatis的生成代码数量。ssm-easy-template把mybatis generator放在`build.gradle`中，封装成一个`Gradle Task`。
+
+ * **修改generator配置文件**: 打开`gradle.propertis`文件,修改数据库信息，默认如下
+```shell
+#mybatis generator properties
+driverClass=com.mysql.jdbc.Driver
+connectionURL=jdbc:mysql://localhost:3306/ssm_easy_template
+userId=root
+password=root
+#生成的model类所在包
+modelPackage=com.github.ichenkaihua.model
+#生成的mapper接口类所在包
+mapperPackage=com.github.ichenkaihua.mapper
+#生成的mapper xml文件所在包，默认存储在resources目录下
+sqlMapperPackage=mybatis_mapper
+
+```
+* **执行 mybatisGenerate task** :
+```shell
+./gradlew mybatisGenerate
+```
+
+####修改项目配置文件
+在`src/main/resources`目录下，有下列文件：
+```shell
+#MBG 配置文件
+generatorConfig.xml
+#项目运行的数据库配置
+jdbc-mysql.properties
+#log4j配置
+log4j.properties
+#mail 
+mail-config.properties
+#spring Application root Context
+spring-config.xml
+# spirng-mail
+spring-mail.xml
+#springMVC context
+spring-mvc-config.xml
+#springMVC shiro
+spring-mvc-shiro.xml
+#spring-mybatis
+spring-mybatis.xml
+#spring-shiro
+spring-shiro.xml
+#spring-tomcatl-pool 连接池
+spring-tomcat-pool.xml
+#连接池配置
+tomcat-pool-config.properties
+```
+**ssm-easy-template把项目配置分离，便于后期扩展或替换组件。根据项目需要更改配置文件**
+
+
+#### 实现项目逻辑
+
+为了方便后期扩展与重用，ssm-easy-template封装出`BaseService<Mapper<M>,M>`,通常service继承`BaseService<Mapper<M>,M>`，单表操作的逻辑不需要再实现，BaseService实现的接口如下:
+```java
+package com.github.ichenkaihua.service;
+
+import org.apache.ibatis.session.RowBounds;
+import org.springframework.beans.factory.annotation.Autowired;
+import tk.mybatis.mapper.common.Mapper;
+
+import java.util.List;
+
+/**
+ * Created by chenkaihua on 15-9-15.
+ */
+public class BaseService<Mapp extends Mapper<M>,M> implements  Mapper<M>  {
+
+
+    @Autowired
+  protected   Mapp mapper;
+
+    @Override
+    public int deleteByExample(Object example) {
+        return mapper.deleteByExample(example);
+    }
+
+    @Override
+    public int deleteByPrimaryKey(Object key) {
+        return mapper.deleteByPrimaryKey(key);
+    }
+
+    @Override
+    public int delete(M record) {
+        return mapper.delete(record);
+    }
+
+    @Override
+    public int insert(M record) {
+        return mapper.insert(record);
+    }
+
+    @Override
+    public int insertSelective(M record) {
+        return mapper.insertSelective(record);
+    }
+
+    @Override
+    public List<M> selectByExample(Object example) {
+        return mapper.selectByExample(example);
+    }
+
+    @Override
+    public List<M> selectByExampleAndRowBounds(Object example, RowBounds rowBounds) {
+        return mapper.selectByExampleAndRowBounds(example,rowBounds);
+    }
+
+    @Override
+    public M selectByPrimaryKey(Object key) {
+        return mapper.selectByPrimaryKey(key);
+    }
+
+    @Override
+    public int selectCountByExample(Object example) {
+        return mapper.selectCountByExample(example);
+    }
+
+    @Override
+    public int selectCount(M record) {
+        return mapper.selectCount(record);
+    }
+
+    @Override
+    public List<M> select(M record) {
+        return mapper.select(record);
+    }
+
+    @Override
+    public M selectOne(M record) {
+        return mapper.selectOne(record);
+    }
+
+    @Override
+    public List<M> selectByRowBounds(M record, RowBounds rowBounds) {
+        return mapper.selectByRowBounds(record,rowBounds);
+    }
+
+    @Override
+    public int updateByExample(M record, Object example) {
+        return mapper.updateByExample(record,example);
+    }
+
+    @Override
+    public int updateByExampleSelective(M record, Object example) {
+        return mapper.updateByExampleSelective(record,example);
+    }
+
+    @Override
+    public int updateByPrimaryKey(M record) {
+        return mapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public int updateByPrimaryKeySelective(M record) {
+        return mapper.updateByPrimaryKeySelective(record);
+    }
+}
+
+```
+
+
+###部署
 `Tomcat`或者`Jetty`都行，只需要配置 IDEA的 `run config`
+```shell
+#jetty启动项目，http://locaohost:8080/
+./gradlew  jettyStart
+
+#关闭jetty
+./gradlew jettyStop
+
+```
 ## 关于我
 **博客链接**:[陈开华的博客][4]
 
