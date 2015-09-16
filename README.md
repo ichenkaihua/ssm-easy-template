@@ -5,9 +5,9 @@
 
 ####组成
 #####主要框架
-* **Spring**: 不多说，貌似J2Ee离不开他了。
-* **Springmvc**: 与Spring无缝集成，简单灵活，支持Restful风格。
-* **Mybatis** :个人认为比Hibernate好控制，毕竟是自己写的Sql语句。
+* **Spring4.2**: 不多说，貌似J2Ee离不开他了。
+* **Springmvc4.2**: 与Spring无缝集成，简单灵活，支持Restful风格。
+* **Mybatis3.3.0** :个人认为比Hibernate好控制，毕竟是自己写的Sql语句。
 * **Shiro**: Apache的权限管理框架，扩展性好，使用简单，个人认为比`Spring-Security`框架容易入手。
 * **tomcat连接池** : 稳定，性能好。
 * **sf4j** ：支持多种日志系统，使用的是log4j。
@@ -32,11 +32,10 @@ Eclipse确实强大，但 [Intellij Idea][1] 更智能，强烈推荐 **Idea**
 ``` shell
 	git clone https://github.com/ichenkaihua/ssm-easy-template.git
 ```
-###导入
-建议使用IDEA，eclipse也没问题
+
 
 ###快速开始
-导入`doc/ssm-easy-template.sql`到Mysql
+首先，导入`doc/ssm-easy-template.sql`到Mysql,然后进入到命令行:
 ```shell
 #进入项目目录
 cd ssm-easy-template/
@@ -51,9 +50,12 @@ curl http://localhost:8080/users
 ./gradlew jettyStop
 ```
 
+###导入
+建议使用IDEA，eclipse也没问题
+
 ###详细修改
 
-####利用mybatis-generator(MBG)生成`model/mapper/mapper.xml`文件
+####利用[mybatis-generator(MBG)][6]生成`model/mapper/mapper.xml`文件
 Mybatis考虑到手写XML文件的繁琐，因此开发了MBG工具，通用Mapper这个项目再次简化了mybatis的生成代码数量。ssm-easy-template把mybatis generator放在`build.gradle`中，封装成一个`Gradle Task`。
 
  * **修改generator配置文件**: 打开`gradle.propertis`文件,修改数据库信息，默认如下
@@ -218,7 +220,7 @@ public class BaseService<Mapp extends Mapper<M>,M> implements  Mapper<M>  {
 
 
 ###部署
-`Tomcat`或者`Jetty`都行，只需要配置 IDEA的 `run config`
+SSM-Easy-Template集成了`gretty`插件,更多使用方法前往[gretty官网][5]
 ```shell
 #jetty启动项目，http://locaohost:8080/
 ./gradlew  jettyStart
@@ -236,3 +238,5 @@ public class BaseService<Mapp extends Mapper<M>,M> implements  Mapper<M>  {
 [2]: https://github.com/pagehelper/Mybatis-PageHelper
 [3]:https://github.com/abel533/Mapper
 [4]:http://www.chenkaihua.com
+[5]:https://github.com/akhikhl/gretty
+[6]:http://mybatis.github.io/generator/
