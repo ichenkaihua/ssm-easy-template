@@ -32,7 +32,7 @@
 
 
 	<!-- 开启AOP监听 只对当前配置文件有效 -->
-	<aop:aspectj-autoproxy expose-proxy="true" />
+	<aop:aspectj-autoproxy expose-proxy="true" proxy-target-class="true" />
 
 	<!-- c3p0连接池 -->
 	<!-- <import resource="spring-c3p0.xml" /> -->
@@ -57,7 +57,7 @@
 	<!-- 基于注释的事务，当注释中发现@Transactional时，使用id为“transactionManager”的事务管理器 -->
 	<!-- 如果没有设置transaction-manager的值，则spring以缺省默认的事务管理器来处理事务，默认事务管理器为第一个加载的事务管理器 -->
 
-	<tx:annotation-driven transaction-manager="transactionManager" />
+	<tx:annotation-driven transaction-manager="transactionManager"  />
 
 <!--	<bean id="taskExecutor"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
@@ -74,7 +74,7 @@
 
 
 	<!-- 配置事务异常封装 -->
-	<bean id="persistenceExceptionTranslationPostProcessor"
-		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+<!--	<bean id="persistenceExceptionTranslationPostProcessor"
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />-->
 
 </beans>

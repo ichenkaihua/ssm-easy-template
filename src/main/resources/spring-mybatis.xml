@@ -31,7 +31,7 @@
 						</value>
 					</property>
 				</bean>
-				<!--<bean class="tk.mybatis.mapper.mapperhelper.MapperInterceptor">
+				<bean class="tk.mybatis.mapper.mapperhelper.MapperInterceptor">
 					<property name="properties">
 						<value>
 							mappers=tk.mybatis.mapper.common.Mapper
@@ -39,7 +39,7 @@
 							notEmpty=true
 						</value>
 					</property>
-				</bean>-->
+				</bean>
 			</array>
 		</property>
 	</bean>

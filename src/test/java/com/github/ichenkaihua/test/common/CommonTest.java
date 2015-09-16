@@ -5,6 +5,9 @@ import com.github.ichenkaihua.utils.FileUtils;
 import com.github.ichenkaihua.utils.RandomUtils;
 import org.junit.Test;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
@@ -22,7 +25,7 @@ public class CommonTest {
     }
 
     @Test
-    public void testRandomString(){
+    public void testRandomString() {
         String randomString = RandomUtils.randomString();
         assertNotNull(randomString);
         System.out.println(randomString);
@@ -30,10 +33,9 @@ public class CommonTest {
 
 
     @Test
-    public void testFileUtls(){
+    public void testFileUtls() {
         String fileType = FileUtils.getFileType("sfdsafasfimage");
         System.out.println(fileType);
     }
-
 
 }

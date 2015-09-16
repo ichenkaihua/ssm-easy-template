@@ -25,6 +25,7 @@ public class SpringContextUtil implements ApplicationContextAware,ServletContext
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         SpringContextUtil.applicationContext = applicationContext;
 
+
         
         
         
@@ -105,7 +106,8 @@ public class SpringContextUtil implements ApplicationContextAware,ServletContext
 
 	@Override
 	public void setServletContext(ServletContext servletContext) {
-		SpringContextUtil.servletContext = servletContext;
+
+        SpringContextUtil.servletContext = servletContext;
 	}
 	
 	public static ServletContext getServletContext(){

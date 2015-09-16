@@ -10,7 +10,7 @@
 
 
 
-	<!--<aop:config proxy-target-class="true" />-->
+	<aop:config proxy-target-class="true" />
 
 	<bean
 		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
