@@ -4,7 +4,6 @@ import com.github.ichenkaihua.mapper.UserMapper;
 import com.github.ichenkaihua.model.User;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
 
 /**
  * Created by chenkaihua on 15-9-15.
