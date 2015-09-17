@@ -1,3 +1,5 @@
+import groovy.sql.Sql;
+
 group 'com.github.ichenkaihua'
 version '1.0-SNAPSHOT'
 
@@ -6,7 +8,6 @@ apply plugin: 'idea'
 apply plugin: 'eclipse-wtp'
 
 apply plugin: 'org.akhikhl.gretty'
-
 
 //指定gradle wrapper版本
 task wrapper(type: Wrapper) {
@@ -20,17 +21,17 @@ configurations {
 
 }
 
-
 //配置插件仓库
-buildscript{
+buildscript {
 
-    repositories{
+    repositories {
         mavenCentral()
     }
 
-    dependencies{
+    dependencies {
 
         classpath 'org.akhikhl.gretty:gretty:1.2.4'
+        classpath: 'mysql:mysql-connector-java:5.1.36'
     }
 
 
@@ -39,16 +40,13 @@ buildscript{
 //gretty设置
 gretty {
     port = 8080
-    contextPath ="/"
+    contextPath = "/"
 }
 
 
 repositories {
     mavenCentral()
 }
-
-
-
 
 //统一编码为utf-8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -91,37 +89,75 @@ dependencies {
 
 task mybatisGenerate << {
     ant.properties['targetProject'] = projectDir.path
-    ant.properties['driverClass']=this.driverClass
-    ant.properties['connectionURL']=this.connectionURL
-    ant.properties['userId']=this.userId
-    ant.properties['password']=this.password
-    ant.properties['src_main_java']=sourceSets.main.java.srcDirs[0].path
-    ant.properties['src_main_resources']=sourceSets.main.resources.srcDirs[0].path
-    ant.properties['modelPackage']=this.modelPackage
-    ant.properties['mapperPackage']=this.mapperPackage
-    ant.properties['sqlMapperPackage']=this.sqlMapperPackage
+    ant.properties['driverClass'] = this.driverClass
+    ant.properties['connectionURL'] = this.connectionURL
+    ant.properties['userId'] = this.userId
+    ant.properties['password'] = this.password
+    ant.properties['src_main_java'] = sourceSets.main.java.srcDirs[0].path
+    ant.properties['src_main_resources'] = sourceSets.main.resources.srcDirs[0].path
+    ant.properties['modelPackage'] = this.modelPackage
+    ant.properties['mapperPackage'] = this.mapperPackage
+    ant.properties['sqlMapperPackage'] = this.sqlMapperPackage
 
-    ant.taskdef (
+    ant.taskdef(
             name: 'mbgenerator',
             classname: 'org.mybatis.generator.ant.GeneratorAntTask',
             classpath: configurations.mybatisGenerator.asPath
     )
-    ant.mbgenerator (overwrite: true,
-            configfile: 'src/main/resources/generatorConfig.xml',verbose: true){
+    ant.mbgenerator(overwrite: true,
+            configfile: 'src/main/resources/generatorConfig.xml', verbose: true) {
         propertyset {
             propertyref(name: 'targetProject')
             propertyref(name: 'userId')
-            propertyref(name:'driverClass')
+            propertyref(name: 'driverClass')
             propertyref(name: 'connectionURL')
             propertyref(name: 'password')
             propertyref(name: 'src_main_java')
             propertyref(name: 'src_main_resources')
-            propertyref(name:'modelPackage')
+            propertyref(name: 'modelPackage')
             propertyref(name: 'mapperPackage')
             propertyref(name: 'sqlMapperPackage')
 
         }
     }
 }
+
+
+task loadMySqlDriver << {
+    description='load Mysql Driver Class by ClassLoader'
+    URLClassLoader loader = GroovyObject.class.classLoader
+    configurations.mybatisGenerator.each { File file ->
+        loader.addURL(file.toURL())
+    }
+}
+
+task testPrint <<{
+    println userId
+    println project.password
+    println project.hasProperty("userId")
+
+}
+
+
+Sql getSql() {
+    def props = [user: userId, password: project.password, allowMultiQueries: 'true'] as Properties
+    def url = import_connect_url
+    def driver = driverClass
+    Sql.newInstance(url, props, driver)
+
+
+}
+
+task importToMySql(dependsOn: loadMySqlDriver) << {
+    description='get file text from doc/ssm_easy_template.sql and import to mysql'
+    Sql sql = getSql()
+   def text =  file("doc/ssm_easy_template.sql").text
+    sql.execute(text)
+}
+
+
+
+
+
 
 
