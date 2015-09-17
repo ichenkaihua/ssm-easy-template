@@ -35,14 +35,19 @@ Eclipse确实强大，但 [Intellij Idea][1] 更智能，强烈推荐 **Idea**
 
 
 ###快速开始
-首先，导入`doc/ssm-easy-template.sql`到Mysql,然后进入到命令行:
+修改`build.properties`相关属性(mysql配置),然后进入命令行:
 ```shell
 #进入项目目录
 cd ssm-easy-template/
+
+#初始化数据库,将doc/ssm-easy-template.sql导入到数据库
+./gradlew importToMySql
+
 # jetty启动项目
 ./gradlew  jettyStart
+
 # 获取所有用户 
-curl http://localhost:8080/users
+curl  http://localhost:8080/users
 
 # 其他操作...
 
