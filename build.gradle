@@ -87,6 +87,7 @@ dependencies {
 
 }
 
+//这是新测试
 
 task mybatisGenerate << {
     ant.properties['targetProject'] = projectDir.path
