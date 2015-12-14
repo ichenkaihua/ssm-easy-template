@@ -3,11 +3,16 @@ import groovy.sql.Sql;
 group 'com.github.ichenkaihua'
 version '1.0-SNAPSHOT'
 
+
+
 apply plugin: 'war'
 apply plugin: 'idea'
 apply plugin: 'eclipse-wtp'
 
 apply plugin: 'org.akhikhl.gretty'
+apply plugin: 'org.flywaydb.flyway'
+
+
 
 //指定gradle wrapper版本
 task wrapper(type: Wrapper) {
@@ -32,10 +37,28 @@ buildscript {
 
         classpath 'org.akhikhl.gretty:gretty:1.2.4'
         classpath: 'mysql:mysql-connector-java:5.1.36'
+        classpath "org.flywaydb:flyway-gradle-plugin:3.2.1"
     }
 
 
 }
+
+
+
+
+flyway {
+    user = 'github'
+    url='jdbc:mysql://localhost:3306'
+    password = 'github-pass'
+    schemas = ['ssm-easy-template']
+    locations=["filesystem:${rootDir.path}/doc"]
+   /* placeholders = [
+            'keyABC': 'valueXYZ',
+            'otherplaceholder': 'value123'
+    ]*/
+}
+
+
 
 //gretty设置
 gretty {
