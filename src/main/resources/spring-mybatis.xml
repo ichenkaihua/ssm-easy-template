@@ -12,41 +12,45 @@
         ">
 
 
-	
+
+
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
+		<property name="dataSource" ref="dataSource"/>
 		<property name="mapperLocations">
-			<array>
+			<list>
 				<value>classpath:mybatis_mapper/*.xml</value>
-			</array>
+			</list>
 		</property>
-		<!-- <property name="typeAliasesPackage" value="com.dreamliner.pype.model" /> -->
+		<property name="typeAliasesPackage" value="com.github.ichenkaihua.model"/>
 		<property name="plugins">
-			<array>
+			<list>
 				<bean class="com.github.pagehelper.PageHelper">
+					<!-- 这里的几个配置主要演示如何使用，如果不理解，一定要去掉下面的配置 -->
 					<property name="properties">
 						<value>
 							dialect=mysql
 							reasonable=true
+							supportMethodsArguments=true
+							returnPageInfo=check
+							params=count=countSql
 						</value>
 					</property>
 				</bean>
-				<bean class="tk.mybatis.mapper.mapperhelper.MapperInterceptor">
-					<property name="properties">
-						<value>
-							mappers=tk.mybatis.mapper.common.Mapper
-							IDENTITY=MYSQL
-							notEmpty=true
-						</value>
-					</property>
-				</bean>
-			</array>
+			</list>
 		</property>
 	</bean>
 
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="addToConfig" value="true" />
-		<property name="basePackage" value="com.github.ichenkaihua.mapper" />
+	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.github.ichenkaihua.mapper"/>
+		<!-- 3.2.2版本新特性，markerInterface可以起到mappers配置的作用，详细情况需要看Marker接口类 -->
+		<!-- <property name="markerInterface" value="com.isea533.mybatis.util.MyMapper"/>-->
+		<!-- 通用Mapper通过属性注入进行配置，默认不配置时会注册Mapper<T>接口 -->
+		<!--<property name="properties">
+            <value>
+                mappers=tk.mybatis.mapper.common.Mapper
+            </value>
+        </property>-->
+
 	</bean>
 
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"

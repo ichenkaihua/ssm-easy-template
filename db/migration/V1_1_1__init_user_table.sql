@@ -5,8 +5,8 @@ CREATE TABLE `user` (
  CONSTRAINT PRIMARY KEY (`id`)
 ) ;
 
-INSERT INTO `user` VALUES (1,'chenkaihua',NULL);
-INSERT INTO `user` VALUES   (2,'test_user',NULL);
+INSERT INTO `user` VALUES (1,'chenkaihua','chenkaihua');
+INSERT INTO `user` VALUES   (2,'test_user','test');
 INSERT INTO `user` VALUES (3,'陈开华','mypassword');
 INSERT INTO `user` VALUES (6,'myname','mypass');
 INSERT INTO `user` VALUES (7,'chenhua','chss');

@@ -23,54 +23,6 @@ public class ExceptionController {
 		trustSelfSignedSSL();
 	}
 
-	/**
-	 * 捕获{@link HttpStatusCodeException}异常，最终将
-	 * {@link HttpStatusCodeException#getStatusCode()}获取的状态码写入到
-	 * {@link HttpServletResponse}返回给客户端
-	 * 
-	 * @param response
-	 * @param e
-	 */
-	@ExceptionHandler(value = HttpStatusCodeException.class)
-	public void handerStatesException(HttpServletResponse response,
-			HttpStatusCodeException e) {
-		System.out.println("");
-		logger.info("捕捉到一个:" + e.getClass().getName() + "异常");
-
-		response.setStatus(e.getStatusCode());
-	}
-
-	/**
-	 * 权限错误时调用此方法
-	 * 
-	 * @Title handlerAuthriztion
-	 * @Description
-	 * @Param
-	 * @Return void
-	 * @Throws
-	 */
-	@ExceptionHandler(value = AuthorizationException.class)
-	public void handlerAuthriztionException(HttpServletResponse response) {
-		logger.info("捕捉到一个:" + AuthorizationException.class.getSimpleName() + "异常");
-		response.setStatus(HttpStatus.UNAUTHORIZED);
-	}
-
-	@ExceptionHandler(value = org.springframework.web.client.HttpStatusCodeException.class)
-	public void handlerRestException(HttpServletResponse response,
-			org.springframework.web.client.HttpStatusCodeException exception) {
-		int code = exception.getStatusCode().value();
-		logger.info("捕获到一个:"
-				+ org.springframework.web.client.HttpStatusCodeException.class
-						.getSimpleName() + "异常!" + exception.getStatusCode());
-
-		if (code == 404) {
-			response.setStatus(HttpStatus.NO_RESOURCE);
-		} else if (code == 401)
-			response.setStatus(HttpStatus.FAIL_1);
-		else
-			response.setStatus(code);
-
-	}
 
 	private static void trustSelfSignedSSL() {
 		try {

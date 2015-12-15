@@ -1,7 +1,4 @@
-import groovy.sql.Sql;
-
-group 'com.github.ichenkaihua'
-version '1.0-SNAPSHOT'
+version '2.0'
 
 
 
@@ -46,17 +43,7 @@ buildscript {
 
 
 
-flyway {
-    user = 'github'
-    url='jdbc:mysql://localhost:3306'
-    password = 'github-pass'
-    schemas = ['ssm-easy-template']
-    locations=["filesystem:${rootDir.path}/doc"]
-   /* placeholders = [
-            'keyABC': 'valueXYZ',
-            'otherplaceholder': 'value123'
-    ]*/
-}
+
 
 
 
@@ -77,9 +64,14 @@ ext{
         project.extensions.add("$it.key",it.value);
 
     }
+}
 
 
-
+flyway {
+    user = project['jdbc.user']
+    url= project['jdbc.url']
+    password = project['jdbc.pass']
+    locations=["filesystem:db/migration"]
 }
 
 repositories {
@@ -142,7 +134,7 @@ task mybatisGenerate << {
             classpath: configurations.mybatisGenerator.asPath
     )
     ant.mbgenerator(overwrite: true,
-            configfile: 'src/main/resources/generatorConfig.xml', verbose: true) {
+            configfile: 'db/generatorConfig.xml', verbose: true) {
         propertyset {
             propertyref(name: 'targetProject')
             propertyref(name: 'userId')
@@ -158,42 +150,6 @@ task mybatisGenerate << {
         }
     }
 }
-
-
-task loadMySqlDriver << {
-    description='load Mysql Driver Class by ClassLoader'
-    URLClassLoader loader = GroovyObject.class.classLoader
-    configurations.mybatisGenerator.each { File file ->
-        loader.addURL(file.toURL())
-    }
-}
-
-task testPrint <<{
-    println userId
-    println project.password
-    println project.hasProperty("userId")
-
-}
-
-
-Sql getSql() {
-    def props = [user: userId, password: project.password, allowMultiQueries: 'true'] as Properties
-    def url = import_connect_url
-    def driver = driverClass
-    Sql.newInstance(url, props, driver)
-
-
-}
-
-task importToMySql(dependsOn: loadMySqlDriver) << {
-    description='get file text from doc/ssm_easy_template.sql and import to mysql'
-    Sql sql = getSql()
-   def text =  file("doc/ssm_easy_template.sql").text
-    sql.execute(text)
-}
-
-
-
 
 
 

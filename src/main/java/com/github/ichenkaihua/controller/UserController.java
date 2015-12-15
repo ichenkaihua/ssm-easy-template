@@ -30,7 +30,7 @@ public class UserController {
 
     @RequestMapping(value = "{id}",method = RequestMethod.GET)
     public ResponseEntity getUserBYId(@PathVariable int id){
-        User user = userService.selectByPrimaryKey(id);
+        User user = userService.getUserById(id);
         if(user==null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(user);
     }
@@ -38,13 +38,13 @@ public class UserController {
     @RequestMapping(value = "",method = RequestMethod.POST)
     public ResponseEntity addUser(@RequestBody User user)  {
 
-        Example example = new Example(User.class);
-        example.createCriteria().andEqualTo("name",user.getName());
-        if (userService.selectCountByExample(example)>0) {
+        User countUser = new User();
+        user.setName(user.getName());
+        //如果存在，返回错误码
+        if (userService.isExist(countUser)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
-
-        userService.insert(user);
+        userService.addUser(user);
         return ResponseEntity.created(URIUtils.createURI("users/{id}",user.getId())).body(user);
 
     }
@@ -52,7 +52,7 @@ public class UserController {
 
     @RequestMapping(value = "",method =RequestMethod.GET )
     public ResponseEntity users(){
-        List<User> users = userService.select(new User());
+        List<User> users =userService.getUsers(null);
         return new ResponseEntity(users, HttpStatus.OK);
     }
 
@@ -60,12 +60,12 @@ public class UserController {
 
     @RequestMapping(value = "{id}",method = RequestMethod.DELETE)
     public void deleteById(@PathVariable int id){
-        userService.deleteByPrimaryKey(id);
+        userService.deleteById(id);
     }
 
     @RequestMapping
     public void update(@RequestBody User user){
-        userService.updateByPrimaryKeySelective(user);
+        userService.update(user);
     }
 
 
