@@ -251,6 +251,11 @@ SSM-Easy-Template集成了`gretty`插件,更多使用方法前往[gretty官网][
 
 [changelog](doc/changelog.md)
 
+### 相关文档
+* [在gradle中使用MyBatis Generator生成model,dao,mapper
+](http://chenkaihua.com/2015/12/19/running-mybatis-generator-with-gradle/)
+
+
 ## 关于我
 **博客链接**:[陈开华的博客][4]
 
