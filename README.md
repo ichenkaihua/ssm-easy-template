@@ -5,7 +5,7 @@
 
 #### 组成
 ##### 主要框架
-* **Spring4.2**: 不多说，貌似J2Ee离不开他了。
+* **Spring4.2**: 不多说，貌似J2EE离不开他了。
 * **Springmvc4.2**: 与Spring无缝集成，简单灵活，支持Restful风格。
 * **Mybatis3.3.0** :个人认为比Hibernate好控制，毕竟是自己写的Sql语句。
 * **Shiro**: Apache的权限管理框架，扩展性好，使用简单，个人认为比`Spring-Security`框架容易入手。
@@ -35,16 +35,17 @@ Eclipse确实强大，但 [Intellij Idea][1] 更智能，强烈推荐 **Idea**
 
 
 ### 快速开始
+新建或者配置一个mysql数据库，根据数据库信息修改`src/main/resources/db-mysql.properties`文件。
 修改`build.properties`相关属性(mysql配置),然后进入命令行:
 ```shell
 # 进入项目目录
 cd ssm-easy-template/
 
-# 初始化数据库,将doc/ssm-easy-template.sql导入到数据库
-./gradlew importToMySql
+# 初始化数据库,将db/migration目录下sql迁移到本地数据库
+./gradlew flywayMigrate
 
 # jetty启动项目
-./gradlew  jettyStart
+./gradlew  appStart
 
 # 获取所有用户 
 curl  http://localhost:8080/users
@@ -52,7 +53,7 @@ curl  http://localhost:8080/users
 # 其他操作...
 
 # 关闭jetty
-./gradlew jettyStop
+./gradlew appStop
 ```
 
 ### 导入
@@ -63,13 +64,9 @@ curl  http://localhost:8080/users
 #### 利用[mybatis-generator(MBG)][6] 生成`model/mapper/mapper.xml`文件
 Mybatis考虑到手写XML文件的繁琐，因此开发了MBG工具，通用Mapper这个项目再次简化了mybatis的生成代码数量。ssm-easy-template把mybatis generator放在`build.gradle`中，封装成一个`Gradle Task`。
 
- * **修改generator配置文件**: 打开`gradle.propertis`文件,修改数据库信息，默认如下
+ * **修改generator配置文件**: 打开`gradle.propertis`文件,修改生成信息(数据库信息在`src/main/resources/db-mysql.properties`)，默认如下
+
 ```shell
-#mybatis generator properties
-driverClass=com.mysql.jdbc.Driver
-connectionURL=jdbc:mysql://localhost:3306/ssm_easy_template
-userId=root
-password=root
 #生成的model类所在包
 modelPackage=com.github.ichenkaihua.model
 #生成的mapper接口类所在包
@@ -85,9 +82,8 @@ sqlMapperPackage=mybatis_mapper
 
 #### 修改项目配置文件
 在`src/main/resources`目录下，有下列文件：
+
 ```shell
-#MBG 配置文件
-generatorConfig.xml
 #项目运行的数据库配置
 jdbc-mysql.properties
 #log4j配置
@@ -120,6 +116,7 @@ tomcat-pool-config.properties
 ```java
 package com.github.ichenkaihua.service;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.common.Mapper;
@@ -127,13 +124,14 @@ import tk.mybatis.mapper.common.Mapper;
 import java.util.List;
 
 /**
- * Created by chenkaihua on 15-9-15.
+ * Created by chenkaihua on 15-12-23.
  */
-public class BaseService<Mapp extends Mapper<M>,M> implements  Mapper<M>  {
+public class BaseService<Mapp extends Mapper<M>,M> implements  Mapper<M>{
 
 
     @Autowired
-  protected   Mapp mapper;
+    Mapp mapper;
+
 
     @Override
     public int deleteByExample(Object example) {
@@ -158,6 +156,11 @@ public class BaseService<Mapp extends Mapper<M>,M> implements  Mapper<M>  {
     @Override
     public int insertSelective(M record) {
         return mapper.insertSelective(record);
+    }
+
+    @Override
+    public List<M> selectAll() {
+        return mapper.selectAll();
     }
 
     @Override
@@ -201,12 +204,12 @@ public class BaseService<Mapp extends Mapper<M>,M> implements  Mapper<M>  {
     }
 
     @Override
-    public int updateByExample(M record, Object example) {
+    public int updateByExample(@Param("record") M record, @Param("example") Object example) {
         return mapper.updateByExample(record,example);
     }
 
     @Override
-    public int updateByExampleSelective(M record, Object example) {
+    public int updateByExampleSelective(@Param("record") M record, @Param("example") Object example) {
         return mapper.updateByExampleSelective(record,example);
     }
 
@@ -221,6 +224,7 @@ public class BaseService<Mapp extends Mapper<M>,M> implements  Mapper<M>  {
     }
 }
 
+
 ```
 
 
@@ -234,6 +238,19 @@ SSM-Easy-Template集成了`gretty`插件,更多使用方法前往[gretty官网][
 ./gradlew jettyStop
 
 ```
+
+### 修改记录
+
+* 2015-12-24 --v2.0
+    * 集成 flyway到gradle中，用于数据库迁移
+    * 修改 数据库配置全部读取`src/main/resources/db-mysql.properties`
+    * 集成 `mybatis generator`在gradle中，用于生成mybatis mapper等java类
+    * 更新 mybatis分页插件(`com.github.pagehelper:pagehelper`)到`4.0.0`版本
+    * 更新 mybatis通用插件(`tk.mybatis:mapper:3.3.1`)到`3.3.1` 版本
+    * 添加 `HomController`首页映射至`WEB-INF/index.jsp`
+
+[changelog](doc/changelog.md)
+
 ## 关于我
 **博客链接**:[陈开华的博客][4]
 
