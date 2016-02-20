@@ -1,7 +1,7 @@
 # ssm-easy-template
 
 ## 介绍
-**Ssm-Easy-Template** 是一个J2Ee项目快速开发脚手架，集成了最常用的框架,适用于`Restfull` 架构风格`Web Service`接口开发。
+**Ssm-Easy-Template** 是一个J2Ee项目快速开发脚手架，集成了最常用的框架,适用于`Restfull` 架构风格`Web Service`接口开发。项目使用最灵活的构建工具-`gradle`，加入了常用的gradle插件(`gretty`,`flywaydb`，`mybatis generator`),。
 
 #### 组成
 ##### 主要框架
@@ -112,120 +112,7 @@ tomcat-pool-config.properties
 
 #### 实现项目逻辑
 
-为了方便后期扩展与重用，ssm-easy-template封装出`BaseService<Mapper<M>,M>`,通常service继承`BaseService<Mapper<M>,M>`，单表操作的逻辑不需要再实现，BaseService实现的接口如下:
-```java
-package com.github.ichenkaihua.service;
-
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.factory.annotation.Autowired;
-import tk.mybatis.mapper.common.Mapper;
-
-import java.util.List;
-
-/**
- * Created by chenkaihua on 15-12-23.
- */
-public class BaseService<Mapp extends Mapper<M>,M> implements  Mapper<M>{
-
-
-    @Autowired
-    Mapp mapper;
-
-
-    @Override
-    public int deleteByExample(Object example) {
-        return mapper.deleteByExample(example);
-    }
-
-    @Override
-    public int deleteByPrimaryKey(Object key) {
-        return mapper.deleteByPrimaryKey(key);
-    }
-
-    @Override
-    public int delete(M record) {
-        return mapper.delete(record);
-    }
-
-    @Override
-    public int insert(M record) {
-        return mapper.insert(record);
-    }
-
-    @Override
-    public int insertSelective(M record) {
-        return mapper.insertSelective(record);
-    }
-
-    @Override
-    public List<M> selectAll() {
-        return mapper.selectAll();
-    }
-
-    @Override
-    public List<M> selectByExample(Object example) {
-        return mapper.selectByExample(example);
-    }
-
-    @Override
-    public List<M> selectByExampleAndRowBounds(Object example, RowBounds rowBounds) {
-        return mapper.selectByExampleAndRowBounds(example,rowBounds);
-    }
-
-    @Override
-    public M selectByPrimaryKey(Object key) {
-        return mapper.selectByPrimaryKey(key);
-    }
-
-    @Override
-    public int selectCountByExample(Object example) {
-        return mapper.selectCountByExample(example);
-    }
-
-    @Override
-    public int selectCount(M record) {
-        return mapper.selectCount(record);
-    }
-
-    @Override
-    public List<M> select(M record) {
-        return mapper.select(record);
-    }
-
-    @Override
-    public M selectOne(M record) {
-        return mapper.selectOne(record);
-    }
-
-    @Override
-    public List<M> selectByRowBounds(M record, RowBounds rowBounds) {
-        return mapper.selectByRowBounds(record,rowBounds);
-    }
-
-    @Override
-    public int updateByExample(@Param("record") M record, @Param("example") Object example) {
-        return mapper.updateByExample(record,example);
-    }
-
-    @Override
-    public int updateByExampleSelective(@Param("record") M record, @Param("example") Object example) {
-        return mapper.updateByExampleSelective(record,example);
-    }
-
-    @Override
-    public int updateByPrimaryKey(M record) {
-        return mapper.updateByPrimaryKey(record);
-    }
-
-    @Override
-    public int updateByPrimaryKeySelective(M record) {
-        return mapper.updateByPrimaryKeySelective(record);
-    }
-}
-
-
-```
+为了方便后期扩展与重用，ssm-easy-template封装出`BaseService<Mapper<M>,M>`,通常service继承`BaseService<Mapper<M>,M>`，单表操作的逻辑不需要再实现
 
 
 ### 部署
@@ -238,6 +125,10 @@ SSM-Easy-Template集成了`gretty`插件,更多使用方法前往[gretty官网][
 ./gradlew jettyStop
 
 ```
+
+### Debug
+可以参考[gradle集成greendao-generator生成android端greendao](http://www.chenkaihua.com/2016/01/05/gradle-integration-greendao_generator-generate-greendao/)
+
 
 ### 修改记录
 
