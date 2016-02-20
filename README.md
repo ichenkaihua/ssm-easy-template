@@ -127,7 +127,7 @@ SSM-Easy-Template集成了`gretty`插件,更多使用方法前往[gretty官网][
 ```
 
 ### Debug
-可以参考[gradle集成greendao-generator生成android端greendao](http://www.chenkaihua.com/2016/01/05/gradle-integration-greendao_generator-generate-greendao/)
+可以参考[IntelliJ IDEA +gradle+gretty debug j2ee web-application](http://www.chenkaihua.com/2016/02/20/idea-webapp-remote--debug-via-gretty/)
 
 
 ### 修改记录
