@@ -147,7 +147,7 @@ SSM-Easy-Template集成了`gretty`插件,更多使用方法前往[gretty官网][
 
 ### 修改记录
 
-* 2015-4-18 --v2.1
+* 2016-4-18 --v2.1
     * 添加 gradle切换开发环境功能
     * 更新`spring`版本到最新`4.2.5.release`
     * 更新`mybatis`到`1.3.0`版本
