@@ -32,7 +32,7 @@ buildscript {
 
         classpath 'org.akhikhl.gretty:gretty:1.2.4'
         classpath: 'mysql:mysql-connector-java:5.1.36'
-        classpath "org.flywaydb:flyway-gradle-plugin:3.2.1"
+        classpath "org.flywaydb:flyway-gradle-plugin:4.0"
     }
 
 
@@ -46,23 +46,57 @@ gretty {
 
 
 ext {
-
-    def prop = new Properties();
-    file("src/main/resources/jdbc-mysql.properties").withInputStream {
-        prop.load(it)
-    }
-    prop.each {
-        project.extensions.add("$it.key", it.value);
+    if (!project.hasProperty("env")) {
+        println '没有配置数据环境，默认使用 开发环境'
+        env = "dev"
 
     }
+    println "使用数据库环境为:${project['env']}"
+
+}
+
+def getDbProperties = {
+    def properties = new Properties()
+    def dbPropertiesPath =  sourceSets.main.resources.srcDirs[1].path;
+    file("$dbPropertiesPath/jdbc-mysql.properties").withInputStream { inputStream ->
+        properties.load(inputStream)
+    }
+
+    properties;
+
+}
+
+
+
+
+
+
+sourceSets {
+    main {
+        resources {
+            srcDir("src/main/resources")
+
+            if (project['env'] == 'dev') {
+                srcDir("src/main/resources-dev")
+            } else if (project['env'] == 'prod') {
+                srcDir('src/main/resources-prod')
+            }
+
+        }
+
+
+    }
+
+
 }
 
 
 flyway {
-    user = project['jdbc.user']
-    url = project['jdbc.url']
-    password = project['jdbc.pass']
-    locations = ["filesystem:db/migration"]
+    def prop = getDbProperties()
+    user =prop.getProperty('jdbc.user')
+    url = prop.getProperty('jdbc.url')
+    password = prop.getProperty('jdbc.pass')
+    locations = prop.getProperty("filesystem:db/migration")
 }
 
 repositories {
@@ -75,7 +109,7 @@ repositories {
 //依赖
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile 'org.springframework:spring-test:4.2.0.RELEASE'
+    testCompile 'org.springframework:spring-test:4.2.5.RELEASE'
     testCompile 'org.hamcrest:hamcrest-core:1.3'
     testCompile 'org.mockito:mockito-core:1.10.19'
 
@@ -87,7 +121,7 @@ dependencies {
     compile 'org.springframework:spring-context-support:4.2.5.RELEASE'
     compile 'mysql:mysql-connector-java:5.1.38'
     compile 'org.mybatis:mybatis:3.3.1'
-    compile 'org.mybatis:mybatis-spring:1.2.3'
+    compile 'org.mybatis:mybatis-spring:1.3.0'
     compile 'com.github.pagehelper:pagehelper:4.1.3'
     compile 'org.apache.shiro:shiro-spring:1.2.4'
     compile 'org.apache.shiro:shiro-web:1.2.4'
@@ -111,11 +145,13 @@ dependencies {
 //这是新测试
 
 task mybatisGenerate << {
+        def prop = getDbProperties()
+
     ant.properties['targetProject'] = projectDir.path
-    ant.properties['driverClass'] = project['jdbc.driverClassName']
-    ant.properties['connectionURL'] = project['jdbc.url']
-    ant.properties['userId'] = project['jdbc.user']
-    ant.properties['password'] = project['jdbc.pass']
+    ant.properties['driverClass'] = prop.getProperty('jdbc.driverClassName')
+    ant.properties['connectionURL'] = prop.getProperty('jdbc.url')
+    ant.properties['userId'] = prop.getProperty('jdbc.user')
+    ant.properties['password'] = prop.getProperty('jdbc.pass')
     ant.properties['src_main_java'] = sourceSets.main.java.srcDirs[0].path
     ant.properties['src_main_resources'] = sourceSets.main.resources.srcDirs[0].path
     ant.properties['modelPackage'] = this.modelPackage

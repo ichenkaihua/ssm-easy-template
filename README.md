@@ -35,8 +35,9 @@ Eclipse确实强大，但 [Intellij Idea][1] 更智能，强烈推荐 **Idea**
 
 
 ### 快速开始
-新建或者配置一个mysql数据库，根据数据库信息修改`src/main/resources/db-mysql.properties`文件。
-修改`build.properties`相关属性(mysql配置),然后进入命令行:
+新建或者配置一个mysql数据库，根据数据库信息修改`src/main/resources-dev/jdbc-mysql.properties`文件。
+然后进入命令行:
+
 ```shell
 # 进入项目目录
 cd ssm-easy-template/
@@ -109,6 +110,20 @@ tomcat-pool-config.properties
 ```
 **ssm-easy-template把项目配置分离，便于后期扩展或替换组件。根据项目需要更改配置文件**
 
+#### 数据库开发环境切换
+
+项目开发中，通常有多个环境，一个是用于本地调试的开发环境，另一个是用于对外发布的生产环境。
+在本地开发环境中，使用本地安装的数据库，在生产环境中使用生产环境的数据库。这样就能避免本地调试不当导致对生产环境数据造成破坏。本项目用gradle简单实现了此功能
+
+**如何使用**
+
+* 根据项目情况，修改`src/main/resources-dev/jdbc-mysql.properties`，这个文件是开发环境下数据库配置,通常配置的本地数据库环境
+* 根据项目情况，修改`src/main/resources-prod/jdbc-mysql.properties`，这个文件是开发环境下数据库配置,通常配置的是外网数据库环境
+* 修改`gradle.properties`配置文件的属性`env=dev`,有两个选项:`dev`--本地环境,`prod`--生产环境
+* 重新build或appStart即可
+
+>> **需要注意的是**: `resources-dev/jdbc-mysql.properties` 和`resources-prod/jdbc-mysql.properties`两个文件的字段名要一致，因为spring会读取这两个文件中的一个，字段不一致会导致出错
+
 
 #### 实现项目逻辑
 
@@ -132,13 +147,13 @@ SSM-Easy-Template集成了`gretty`插件,更多使用方法前往[gretty官网][
 
 ### 修改记录
 
-* 2015-12-24 --v2.0
-    * 集成 flyway到gradle中，用于数据库迁移
-    * 修改 数据库配置全部读取`src/main/resources/db-mysql.properties`
-    * 集成 `mybatis generator`在gradle中，用于生成mybatis mapper等java类
-    * 更新 mybatis分页插件(`com.github.pagehelper:pagehelper`)到`4.0.0`版本
-    * 更新 mybatis通用插件(`tk.mybatis:mapper:3.3.1`)到`3.3.1` 版本
-    * 添加 `HomController`首页映射至`WEB-INF/index.jsp`
+* 2015-4-18 --v2.1
+    * 添加 gradle切换开发环境功能
+    * 更新`spring`版本到最新`4.2.5.release`
+    * 更新`mybatis`到`1.3.0`版本
+    * 更新`tomcat-jdbc`到`8.0.33`版本
+    * 其他依赖更新到新版
+    * 更新`flydb`插件到`4.0`版本
 
 [changelog](doc/changelog.md)
 
