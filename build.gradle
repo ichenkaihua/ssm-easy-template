@@ -57,7 +57,7 @@ ext {
 
 def getDbProperties = {
     def properties = new Properties()
-    def dbPropertiesPath =  sourceSets.main.resources.srcDirs[1].path;
+    def dbPropertiesPath = sourceSets.main.resources.srcDirs[1].path;
     file("$dbPropertiesPath/jdbc-mysql.properties").withInputStream { inputStream ->
         properties.load(inputStream)
     }
@@ -93,7 +93,7 @@ sourceSets {
 
 flyway {
     def prop = getDbProperties()
-    user =prop.getProperty('jdbc.user')
+    user = prop.getProperty('jdbc.user')
     url = prop.getProperty('jdbc.url')
     password = prop.getProperty('jdbc.pass')
     locations = prop.getProperty("filesystem:db/migration")
@@ -136,6 +136,12 @@ dependencies {
     compile 'tk.mybatis:mapper:3.3.8'
     compile 'javax.servlet:javax.servlet-api:3.1.0'
 
+    //swagger
+    compile "io.springfox:springfox-swagger2:2.4.0"
+    compile 'io.springfox:springfox-swagger-ui:2.4.0'
+    compile 'io.springfox:springfox-staticdocs:2.4.0'
+
+
     mybatisGenerator 'org.mybatis.generator:mybatis-generator-core:1.3.2'
     mybatisGenerator 'mysql:mysql-connector-java:5.1.38'
     mybatisGenerator 'tk.mybatis:mapper:3.3.8'
@@ -145,7 +151,7 @@ dependencies {
 //这是新测试
 
 task mybatisGenerate << {
-        def prop = getDbProperties()
+    def prop = getDbProperties()
 
     ant.properties['targetProject'] = projectDir.path
     ant.properties['driverClass'] = prop.getProperty('jdbc.driverClassName')
