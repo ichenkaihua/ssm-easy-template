@@ -1,5 +1,7 @@
 package com.github.ichenkaihua.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Table(name = "user")
@@ -10,6 +12,7 @@ public class User {
 
     private String name;
 
+    @JsonIgnore
     private String password;
 
     /**
@@ -52,5 +55,14 @@ public class User {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

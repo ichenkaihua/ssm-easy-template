@@ -22,9 +22,7 @@
 		  <bean class="com.github.ichenkaihua.bind.RequestPageInfoMethodArgumentResolver" />
         </mvc:argument-resolvers>
 	</mvc:annotation-driven>
-	<mvc:annotation-driven  />
 
-	<context:annotation-config/>
 
 
 	<bean class="com.github.ichenkaihua.document.MySwaggerConfig"/>

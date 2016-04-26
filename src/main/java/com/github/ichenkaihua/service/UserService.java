@@ -32,6 +32,7 @@ public class UserService  {
 
 
     public boolean isExist(User user){
+        System.out.println(user.toString());
         return  userMapper.selectCount(user)>0;
     }
 
