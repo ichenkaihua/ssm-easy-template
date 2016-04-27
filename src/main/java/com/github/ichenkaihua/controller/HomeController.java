@@ -13,7 +13,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @ApiIgnore
 public class HomeController {
 
-
+    //首页跳转到api页面
     @RequestMapping("index")
     public ModelAndView home(){
         return new ModelAndView("redirect:swagger-ui.html");

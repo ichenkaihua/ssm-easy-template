@@ -44,7 +44,7 @@ public class MySwaggerConfig {
                 .apiInfo(apiInfo())
                 .select()
                 .paths(userPaths())
-                .build().genericModelSubstitutes(ResponseEntity.class);
+                .build().genericModelSubstitutes(ResponseEntity.class).useDefaultResponseMessages(false);
         return docket;
     }
 
