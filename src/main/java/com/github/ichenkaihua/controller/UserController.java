@@ -22,7 +22,7 @@ import static org.springframework.http.MediaType.APPLICATION_ATOM_XML_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 
-@RequestMapping(value = "users", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+@RequestMapping(value = "users", produces = {APPLICATION_JSON_VALUE})
 @RestController
 @Api(value = "/users", tags = "UserApi", description = "用户信息接口")
 public class UserController {
@@ -41,7 +41,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "指定id的用户不存在",
                     response = ErrorResponseEntity.class)
     })
-    public ResponseEntity getUserBYId(@ApiParam(value = "用户id") @PathVariable int id) {
+    public ResponseEntity getUserBYId(@ApiParam(value = "用户id",required = true) @PathVariable int id) {
         User user = userService.getUserById(id);
         if (user == null) {
             return new ErrorResponseEntity(409, "用户创建失败").toResponseEntity();
