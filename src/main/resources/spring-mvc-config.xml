@@ -38,7 +38,7 @@
         <context:include-filter type="annotation" expression="org.apache.shiro.authz.annotation.RequiresUser" />
     </context:component-scan>
 
-
+	<context:annotation-config/>
 
 	<mvc:view-controller path="/" view-name="forward:/index" />
 
@@ -68,10 +68,8 @@
 	</bean>
 	
 	 <import resource="spring-mvc-shiro.xml"/>
-	
 
-	
-	
+
 	
 	
 

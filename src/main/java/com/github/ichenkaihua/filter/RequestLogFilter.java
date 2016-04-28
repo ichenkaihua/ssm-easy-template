@@ -49,11 +49,14 @@ public class RequestLogFilter extends AbstractFilter {
 			HttpServletResponse response, FilterChain chain,
 			HttpSession session, String menthod, String url)
 			throws IOException, ServletException {
-
+		logger.info("Accept:{}",request.getHeader("Accept"));
+		logger.info("Content-Type:{}",request.getHeader("Content-Type"));
 		logger.info("------开始过滤--------");
 
 		long before = System.currentTimeMillis();
 		logger.info("拦截到请求:{} : {}{}", menthod,url,getParamsString(request.getParameterMap()));
+
+
 		chain.doFilter(request, response);
 		long after = System.currentTimeMillis();
 		logger.info("请求结果:" + url + " status:" + response.getStatus());
