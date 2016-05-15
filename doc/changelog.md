@@ -1,5 +1,11 @@
 # 修改日志
 
+* 2016-5-15 --v2.2
+    * 集成 `spring-fox`, `swagger2`,自动生产restApi文档，开启应用即可浏览
+    * 集成 `asciidoctor`,一键生成restApi的`html`和`pdf`格式文档
+    * 集成 `rest-assured`，并提供demo，结合`spring-mvc-test`框架使用，测试rest接口更简单
+
+
 * 2016-4-18 --v2.1
     * 添加 gradle切换开发环境功能
     * 更新`spring`版本到最新`4.2.5.release`

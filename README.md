@@ -1,7 +1,7 @@
 # ssm-easy-template
 
 ## 介绍
-**Ssm-Easy-Template** 是一个J2Ee项目快速开发脚手架，集成了最常用的框架,适用于`Restfull` 架构风格`Web Service`接口开发。项目使用最灵活的构建工具-`gradle`，加入了常用的gradle插件(`gretty`,`flydb`，`mybatis generator`),。
+**Ssm-Easy-Template** 是一个J2Ee项目快速开发脚手架，集成了最常用的框架,适用于`Restfull` 架构风格`Web Service`接口开发。项目使用最灵活的构建工具-`gradle`，加入了常用的gradle插件(`gretty`,`flydb`，`mybatis generator`),集成`swagger2`，`asciidoctor`，自动生成`rest api`文档。
 
 #### 组成
 ##### 主要框架
@@ -11,6 +11,8 @@
 * **Shiro**: Apache的权限管理框架，扩展性好，使用简单，个人认为比`Spring-Security`框架容易入手。
 * **tomcat连接池** : 稳定，性能好。
 * **sf4j** ：支持多种日志系统，使用的是log4j。
+* **spring-fox**: 自动生成rest api文档
+* **asccidoctor**: 将rest api转换成html5和pdf格式的硬文档
 
 ##### 工具框架
 * **Spring-Test** :包括了常用单元测试、集成测试、Web测试，`Src/Test/Java`下有几个简单的测试类。使用测试框架的好处就是节省时间，无需启动Server就能测试程序。
@@ -19,6 +21,10 @@
 * **Spring-Mail**： 可修改`/src/main/resource/mail-config.properties`配置文件，这个配置文件配置的是主邮箱。
 * **commons fileupload**:`spring mvc`中集成了`appache-commons-fileupload`上传组件。上传处理更便捷。
 
+### 效果图
+
+![live-api](doc/screenshot/swagger.png)
+![html_api](doc/screenshot/swagger_html.png)
 
 #### 开发工具
 ##### IDE
@@ -122,7 +128,20 @@ tomcat-pool-config.properties
 * 修改`gradle.properties`配置文件的属性`env=dev`,有两个选项:`dev`--本地环境,`prod`--生产环境
 * 重新build或appStart即可
 
->> **需要注意的是**: `resources-dev/jdbc-mysql.properties` 和`resources-prod/jdbc-mysql.properties`两个文件的字段名要一致，因为spring会读取这两个文件中的一个，字段不一致会导致出错
+> **需要注意的是**: `resources-dev/jdbc-mysql.properties` 和`resources-prod/jdbc-mysql.properties`两个文件的字段名要一致，因为spring会读取这两个文件中的一个，字段不一致会导致出错
+
+### 生成restAPI文档
+
+项目集成了[spring-fox][7],[asccidotor][8]，能够在线浏览restapi，并生成`html`,`pdf`格式的硬文档
+项目启动后，打开`http://localhost:8080/swagger-ui.html`即可查看api文档
+
+``` shell
+# 生成html和pdf文档
+gradle asccidoctor
+
+```
+
+
 
 
 #### 实现项目逻辑
@@ -147,13 +166,11 @@ SSM-Easy-Template集成了`gretty`插件,更多使用方法前往[gretty官网][
 
 ### 修改记录
 
-* 2016-4-18 --v2.1
-    * 添加 gradle切换开发环境功能
-    * 更新`spring`版本到最新`4.2.5.release`
-    * 更新`mybatis`到`1.3.0`版本
-    * 更新`tomcat-jdbc`到`8.0.33`版本
-    * 其他依赖更新到新版
-    * 更新`flydb`插件到`4.0`版本
+* 2016-5-15 --v2.2
+    * 集成 `spring-fox`, `swagger2`,自动生产restApi文档，开启应用即可浏览
+    * 集成 `asciidoctor`,一键生成restApi的`html`和`pdf`格式文档
+    * 集成 `rest-assured`，并提供demo，结合`spring-mvc-test`框架使用，测试rest接口更简单
+
 
 [changelog](doc/changelog.md)
 
@@ -173,3 +190,5 @@ SSM-Easy-Template集成了`gretty`插件,更多使用方法前往[gretty官网][
 [4]:http://www.chenkaihua.com
 [5]:https://github.com/akhikhl/gretty
 [6]:http://mybatis.github.io/generator/
+[7]: http://springfox.github.io/springfox/
+[8]: http://asciidoctor.org/

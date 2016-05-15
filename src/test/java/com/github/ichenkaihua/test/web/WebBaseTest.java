@@ -1,6 +1,7 @@
 package com.github.ichenkaihua.test.web;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,10 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @Transactional(transactionManager = "transactionManager")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextHierarchy({
-        @ContextConfiguration("classpath:spring-config-test.xml"),
-        @ContextConfiguration("classpath:spring-mvc-config-test.xml")
+        @ContextConfiguration("classpath:spring-config.xml"),
+        @ContextConfiguration("classpath:spring-mvc-config.xml")
 })
+@Ignore
 public class WebBaseTest {
 
     @Autowired
@@ -46,6 +48,9 @@ public class WebBaseTest {
 
 
     }
+
+
+
 
 
 
