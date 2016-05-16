@@ -22,7 +22,7 @@ public class UserControllerTest extends RestAssuredBaseTest {
     public void testGetAllUsers(){
         given()
                 .log().all()
-                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .when()
                 .get("/users")
                 .then().log().all()
