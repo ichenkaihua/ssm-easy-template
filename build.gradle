@@ -109,7 +109,7 @@ test {
 }
 
 convertSwagger2markup {
-    dependsOn test
+    dependsOn clean,test
     inputDir swaggerOutputDir
     examplesDir asciiDocOutputDir
     pathsGroupedBy io.github.robwin.swagger2markup.GroupBy.TAGS
