@@ -15,10 +15,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 
-@RequestMapping(value = "users", produces = {APPLICATION_JSON_VALUE})
+@RequestMapping(value = "users", produces = {APPLICATION_JSON_UTF8_VALUE})
 @RestController
 @Api(value = "/users", tags = "UserApi", description = "用户信息接口")
 public class UserController {
@@ -46,7 +47,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST, consumes = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+    @RequestMapping(value = "", method = RequestMethod.POST, consumes = {APPLICATION_JSON_VALUE})
     @ApiOperation(value = "添加用户,会忽略id，用于自动创建", code = 201, response = User.class)
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "用户已经存在",response = ErrorResponseEntity.class)
@@ -78,9 +79,10 @@ public class UserController {
         userService.deleteById(id);
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
-    @ApiOperation(value = "更新用户的基本信息", notes = "不会处理pass字段")
-    public void update(@RequestBody @ApiParam("新的用户信息") User user) {
+    @RequestMapping(value = "{id}",method = RequestMethod.PUT)
+    @ApiOperation(value = "更新用户的基本信息", notes = "不会处理id字段和password字段")
+    public void update(@PathVariable("id") @ApiParam("用户id") int id ,@RequestBody @ApiParam("新的用户信息") User user) {
+        user.setId(id);
         userService.update(user);
     }
 
