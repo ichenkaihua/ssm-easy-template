@@ -138,9 +138,10 @@ tomcat-pool-config.properties
 ``` shell
 # 生成html和pdf文档
 gradle asccidoctor
-
 ```
+之后在`build/asccidoc`目录下可以找到生成的html5和pdf文件.
 
+> 生成的pdf文件有中文显示不全的问题,这是asciidoctor的官方bug,现在已经有方案解决,建议使用`asciidoctor-pdf`工具,使用自定义主题解决这问题.请参考 [这里](https://github.com/asciidoctor/asciidoctor-pdf/issues/82)
 
 
 
