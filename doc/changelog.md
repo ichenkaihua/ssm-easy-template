@@ -1,5 +1,10 @@
 # 修改日志
 
+* 2017-4-4 --v3.0
+    * 更新`spring`版本到最新`4.3.7.release`
+    * 更新`mysql-connector-java`版本到`6.0.6`
+    * 更新一系列依赖到最新版本
+    
 * 2016-5-15 --v2.2
     * 集成 `spring-fox`, `swagger2`,自动生产restApi文档，开启应用即可浏览
     * 集成 `asciidoctor`,一键生成restApi的`html`和`pdf`格式文档
