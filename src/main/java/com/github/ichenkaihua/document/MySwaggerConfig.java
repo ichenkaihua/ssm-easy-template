@@ -34,11 +34,12 @@ public class MySwaggerConfig {
         Contact contact = new Contact("chenkaihua", "https://github.com/ichenkaihua/ssm-easy-template", "admin@chenkaihua.com");
         return new ApiInfoBuilder()
                 .title("ssm_easy_template API接口")
-                .description("SSM-Easy-Template 是一个J2Ee项目快速开发脚手架，" +
+                .description("SSM-Easy-Template 是一个J2EE项目快速开发脚手架，" +
                         "集成了最常用的框架,适用于Restfull 架构风格Web Service接口开发。项目使用最灵活的构建工具-gradle" +
                         "，加入了常用的gradle插件(gretty,flydb，mybatis generator),。")
                 .contact(contact)
-                .version("2.0")
+
+                .version("3.0")
                 .build();
     }
 
