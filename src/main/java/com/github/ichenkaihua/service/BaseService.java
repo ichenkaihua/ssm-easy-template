@@ -106,4 +106,9 @@ public class BaseService<Mapp extends Mapper<M>,M> implements  Mapper<M>{
     public int updateByPrimaryKeySelective(M record) {
         return mapper.updateByPrimaryKeySelective(record);
     }
+
+    @Override
+    public boolean existsWithPrimaryKey(Object key) {
+        return true;
+    }
 }
