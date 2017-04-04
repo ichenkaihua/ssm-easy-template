@@ -1,4 +1,4 @@
-version '2.0'
+version '3.0'
 
 
 
@@ -35,12 +35,13 @@ buildscript {
 
         classpath 'org.akhikhl.gretty:gretty:1.2.4'
         classpath: 'mysql:mysql-connector-java:5.1.36'
-        classpath "org.flywaydb:flyway-gradle-plugin:4.0"
+        classpath "org.flywaydb:flyway-gradle-plugin:4.1.2"
 
         //swagger2markup
         classpath 'io.github.robwin:swagger2markup-gradle-plugin:0.9.2'
         classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
-        classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.10.1'
+        //使用org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.15版本导致 class org.bouncycastle.asn1.ASN1Primitive overrides final method equals.(Ljava/lang/Object;)Z
+        classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.11'
         classpath 'io.github.robwin:swagger2markup-gradle-plugin:0.9.2'
     }
 
@@ -81,6 +82,9 @@ def getDbProperties = {
 }
 
 
+war{
+    archiveName="${baseName}-${project.version}.${extension}"
+}
 
 
 
@@ -118,6 +122,8 @@ convertSwagger2markup {
 
 asciidoctor {
     dependsOn convertSwagger2markup
+    //指定asciidoctorj版本
+    this.version='1.5.4'
     sources {
         include 'index.adoc'
     }
@@ -170,44 +176,53 @@ dependencies {
     //maven仓库中心没有的jar，则放入libs目录下
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile 'org.springframework:spring-webmvc:4.2.5.RELEASE'
-    compile 'org.springframework:spring-orm:4.2.5.RELEASE'
-    compile 'org.springframework:spring-context-support:4.2.5.RELEASE'
-    compile 'mysql:mysql-connector-java:5.1.38'
-    compile 'org.mybatis:mybatis:3.4.0'
-    compile 'org.mybatis:mybatis-spring:1.3.0'
-    compile 'com.github.pagehelper:pagehelper:4.1.3'
-    compile 'org.apache.shiro:shiro-spring:1.2.4'
-    compile 'org.apache.shiro:shiro-web:1.2.4'
+    compile 'org.springframework:spring-webmvc:4.3.7.RELEASE'
+    compile 'org.springframework:spring-orm:4.3.7.RELEASE'
+    compile 'org.springframework:spring-context-support:4.3.7.RELEASE'
+    compile 'mysql:mysql-connector-java:6.0.6'
+    compile 'org.mybatis:mybatis:3.4.2'
+    compile 'org.mybatis:mybatis-spring:1.3.1'
+    compile 'com.github.pagehelper:pagehelper:5.0.0'
+    compile 'org.apache.shiro:shiro-spring:1.3.2'
+    compile 'org.apache.shiro:shiro-web:1.3.2'
 
 
-    compile 'org.apache.tomcat:tomcat-jdbc:8.0.33'
+    compile 'org.apache.tomcat:tomcat-jdbc:8.5.12'
     compile 'javax.mail:mail:1.4.7'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.7.3'
-    compile 'org.aspectj:aspectjweaver:1.8.9'
-    compile 'commons-fileupload:commons-fileupload:1.3.1'
-    compile 'org.slf4j:slf4j-log4j12:1.7.21'
-    compile 'tk.mybatis:mapper:3.3.8'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.7'
+    compile 'org.aspectj:aspectjweaver:1.8.10'
+    compile 'commons-fileupload:commons-fileupload:1.3.2'
+    compile 'org.slf4j:slf4j-log4j12:1.7.25'
+    compile 'tk.mybatis:mapper:3.4.0'
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
 
 
-    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.7.3'
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.8.7'
 
     //swagger
-    compile "io.springfox:springfox-swagger2:2.4.0"
-    compile 'io.springfox:springfox-swagger-ui:2.4.0'
-    compile 'io.springfox:springfox-staticdocs:2.4.0'
+    compile "io.springfox:springfox-swagger2:2.6.1"
+    compile 'io.springfox:springfox-swagger-ui:2.6.1'
+    compile 'io.springfox:springfox-staticdocs:2.6.1'
 
-    testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc:1.1.0.RC1'
-    compile 'io.github.robwin:assertj-swagger:0.1.2'
-    testCompile 'com.fasterxml.jackson.module:jackson-module-jsonSchema:2.4.0'
+    //已下这些依赖有重复
+    compile 'com.github.fge:jackson-coreutils:1.8'
+    compile 'commons-codec:commons-codec:1.9'
+    compile 'com.googlecode.libphonenumber:libphonenumber:6.2'
+    compile 'com.google.code.findbugs:jsr305:3.0.0'
+    compile 'org.apache.httpcomponents:httpcore:4.4.3'
+    compile 'org.apache.commons:commons-lang3:3.3.2'
+    compile 'org.apache.httpcomponents:httpclient:4.5.1'
+
+    testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc:1.1.2.RELEASE'
+    compile 'io.github.robwin:assertj-swagger:0.5.0'
+    testCompile 'com.fasterxml.jackson.module:jackson-module-jsonSchema:2.8.7'
 
 
 
 
-    mybatisGenerator 'org.mybatis.generator:mybatis-generator-core:1.3.2'
-    mybatisGenerator 'mysql:mysql-connector-java:5.1.38'
-    mybatisGenerator 'tk.mybatis:mapper:3.3.8'
+    mybatisGenerator 'org.mybatis.generator:mybatis-generator-core:1.3.5'
+    mybatisGenerator 'mysql:mysql-connector-java:6.0.6'
+    mybatisGenerator 'tk.mybatis:mapper:3.4.0'
 
 }
 
@@ -215,39 +230,41 @@ dependencies {
 
 
 
-task mybatisGenerate << {
-    def prop = getDbProperties()
+task mybatisGenerate  {
+    doLast {
+        def prop = getDbProperties()
 
-    ant.properties['targetProject'] = projectDir.path
-    ant.properties['driverClass'] = prop.getProperty('jdbc.driverClassName')
-    ant.properties['connectionURL'] = prop.getProperty('jdbc.url')
-    ant.properties['userId'] = prop.getProperty('jdbc.user')
-    ant.properties['password'] = prop.getProperty('jdbc.pass')
-    ant.properties['src_main_java'] = sourceSets.main.java.srcDirs[0].path
-    ant.properties['src_main_resources'] = sourceSets.main.resources.srcDirs[0].path
-    ant.properties['modelPackage'] = this.modelPackage
-    ant.properties['mapperPackage'] = this.mapperPackage
-    ant.properties['sqlMapperPackage'] = this.sqlMapperPackage
+        ant.properties['targetProject'] = projectDir.path
+        ant.properties['driverClass'] = prop.getProperty('jdbc.driverClassName')
+        ant.properties['connectionURL'] = prop.getProperty('jdbc.url')
+        ant.properties['userId'] = prop.getProperty('jdbc.user')
+        ant.properties['password'] = prop.getProperty('jdbc.pass')
+        ant.properties['src_main_java'] = sourceSets.main.java.srcDirs[0].path
+        ant.properties['src_main_resources'] = sourceSets.main.resources.srcDirs[0].path
+        ant.properties['modelPackage'] = this.modelPackage
+        ant.properties['mapperPackage'] = this.mapperPackage
+        ant.properties['sqlMapperPackage'] = this.sqlMapperPackage
 
-    ant.taskdef(
-            name: 'mbgenerator',
-            classname: 'org.mybatis.generator.ant.GeneratorAntTask',
-            classpath: configurations.mybatisGenerator.asPath
-    )
-    ant.mbgenerator(overwrite: true,
-            configfile: 'db/generatorConfig.xml', verbose: true) {
-        propertyset {
-            propertyref(name: 'targetProject')
-            propertyref(name: 'userId')
-            propertyref(name: 'driverClass')
-            propertyref(name: 'connectionURL')
-            propertyref(name: 'password')
-            propertyref(name: 'src_main_java')
-            propertyref(name: 'src_main_resources')
-            propertyref(name: 'modelPackage')
-            propertyref(name: 'mapperPackage')
-            propertyref(name: 'sqlMapperPackage')
+        ant.taskdef(
+                name: 'mbgenerator',
+                classname: 'org.mybatis.generator.ant.GeneratorAntTask',
+                classpath: configurations.mybatisGenerator.asPath
+        )
+        ant.mbgenerator(overwrite: true,
+                configfile: 'db/generatorConfig.xml', verbose: true) {
+            propertyset {
+                propertyref(name: 'targetProject')
+                propertyref(name: 'userId')
+                propertyref(name: 'driverClass')
+                propertyref(name: 'connectionURL')
+                propertyref(name: 'password')
+                propertyref(name: 'src_main_java')
+                propertyref(name: 'src_main_resources')
+                propertyref(name: 'modelPackage')
+                propertyref(name: 'mapperPackage')
+                propertyref(name: 'sqlMapperPackage')
 
+            }
         }
     }
 }
