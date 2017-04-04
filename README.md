@@ -167,10 +167,10 @@ SSM-Easy-Template集成了`gretty`插件,更多使用方法前往[gretty官网][
 
 ### 修改记录
 
-* 2016-5-15 --v2.2
-    * 集成 `spring-fox`, `swagger2`,自动生产restApi文档，开启应用即可浏览
-    * 集成 `asciidoctor`,一键生成restApi的`html`和`pdf`格式文档
-    * 集成 `rest-assured`，并提供demo，结合`spring-mvc-test`框架使用，测试rest接口更简单
+* 2017-4-4 --v3.0
+    * 更新`spring`版本到最新`4.3.7.release`
+    * 更新`mysql-connector-java`版本到`6.0.6`
+    * 更新一系列依赖到最新版本
 
 
 [changelog](doc/changelog.md)
